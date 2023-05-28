@@ -1,0 +1,496 @@
+
+--------------------Se crea la tabla de los alumnos en donde guardaremos todos los datos de los mismos------------------
+create table alumnos_tesoem(
+id_alum number (5) primary key not null,
+matricula_alum nvarchar2 (15),
+nombre_alum nvarchar2(30),
+apellido_alum_pa nvarchar2 (30),
+apellido_alum_ma nvarchar2 (30),
+carrera_alum nvarchar2 (15),
+grupo_alum nvarchar2 (5),
+semestre_alum number(3),
+edicifio_alum nvarchar2 (5),
+promedio_alum number (5)
+);
+
+--------------------Se crea funcion de inserta los valores hacia la tabla alumnos_tesoem con sus respectivos defaults------------------
+create or replace procedure pa_alumnos_tesoem
+(id_alum in number  default 0 , 
+matricula_alum  in nvarchar2 default 'null', 
+nombre_alum in nvarchar2 default 'nombre',
+apellido_alum_pa in nvarchar2 default 'apellido paterno',
+apellido_alum_ma in nvarchar2 default 'apellido materno',
+carrera_alum in nvarchar2 default 'Sin carrera',
+grupo_alum in nvarchar2 default 'Null',
+semestre_alum in number default 0,
+edicifio_alum in nvarchar2 default 'Null',
+promedio_alum in number default 0)
+as 
+begin 
+insert into alumnos_tesoem values (id_alum, matricula_alum, nombre_alum, apellido_alum_pa, apellido_alum_ma, carrera_alum, grupo_alum,
+semestre_alum, edicifio_alum ,promedio_alum);
+end;
+-----------------------Aqui se insetan y se ejecuta el proceso de insercion de datos, estos solo son utilizados como ejemplificacion------------------
+execute pa_alumnos_tesoem (1001, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','ISC','6S11', 6, 'A', 99);
+execute pa_alumnos_tesoem (1002, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','TIC','6T11', 6, 'B', 100);
+execute pa_alumnos_tesoem (1003, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','CP','6C11', 6, 'C', 95);
+execute pa_alumnos_tesoem (1004, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','LEG','6G11', 6, 'D', 98);
+execute pa_alumnos_tesoem (1005, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','INAM','6M11', 6, 'E', 88);
+execute pa_alumnos_tesoem (1006, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','ININ','6I11', 6, 'F', 94);
+execute pa_alumnos_tesoem (1007, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','INAD','6D11', 6, 'A', 91);
+execute pa_alumnos_tesoem (1008, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','IER','6E11', 6, 'B', 85);
+execute pa_alumnos_tesoem (1009, '206020041', 'Maria Guadalupe', 'Garcia', 'Serrano','ISA','6SA11', 6, 'B', 83);
+
+select * from alumnos_tesoem;
+
+drop table alumnos_tesoem;
+
+
+----------------En esta seccion se crearon tablas correspondientes a cada carrera de la institucion-------------------------
+
+----------------Se crea la tabla para la carrera de Ingeniería en Sistemas Computacionales-------------------------
+create table isc(
+idisc number (5) primary key not null,
+matricula_isc nvarchar2 (12),
+nombre_isc nvarchar2(80),
+grupo_isc nvarchar2(5),
+edicifio_isc nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a isc,pero solo los alumnos de la carrera ISC-----------------
+create or replace procedure insertar_isc
+as
+begin
+    
+    insert into isc
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='ISC';   --ISA significa Ingeniería en Sistemas Computacionales
+
+end;
+
+execute insertar_isc;
+
+select * from isc;
+
+drop table isc;
+
+----------------Se crea la tabla para la carrera de Ingeniería en Tecnologías de la Información y Comunicaciones-------------------------
+create table tic(
+idtic number (5) primary key not null,
+matricula_tic nvarchar2 (12),
+nombre_tic nvarchar2(80),
+grupo_tic nvarchar2(5),
+edicifio_tic nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a tic,pero solo los alumnos de la carrera TIC-----------------
+create or replace procedure insertar_tic
+as
+begin
+    
+    insert into tic 
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='TIC';   --TIC significa Ingeniería en Tecnologías de la Información y Comunicaciones
+
+end;
+
+execute insertar_tic;
+
+select * from tic;
+
+drop table tic;
+
+----------------Se crea la tabla para la carrera de Contador Público-------------------------
+create table connn(
+idcon number (5) primary key not null,
+matricula_con nvarchar2 (12),
+nombre_con nvarchar2(80),
+grupo_con nvarchar2(5),
+edicifio_con nvarchar2 (5));
+
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a conn,pero solo los alumnos de la carrera CP-----------------
+create or replace procedure insertar_con
+as
+begin
+    
+    insert into connn 
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='CP';   --CP significa Contador Público
+
+end;
+
+execute insertar_con;
+
+select * from connn;
+
+drop table connn;
+
+----------------Se crea la tabla para la carrera de Licenciatura en Gastronomía-------------------------
+create table leg(
+idleg number (5) primary key not null,
+matricula_leg nvarchar2 (12),
+nombre_leg nvarchar2(80),
+grupo_leg nvarchar2(5),
+edicifio_leg nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a leg,pero solo los alumnos de la carrera leg-----------------
+create or replace procedure insertar_leg
+as
+begin
+    
+    insert into leg 
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='LEG';   --LEG significa Licenciatura en Gastronomía
+
+end;
+
+execute insertar_leg;
+
+select * from leg;
+
+drop table leg;
+
+----------------Se crea la tabla para la carrera de Ingeniería Ambiental-------------------------
+create table inam(
+idinam number (5) primary key not null,
+matricula_inam nvarchar2 (12),
+nombre_inam nvarchar2(80),
+grupo_inam nvarchar2(5),
+edicifio_inam nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a inam,pero solo los alumnos de la carrera INAM-----------------
+create or replace procedure insertar_inam
+as
+begin
+    
+    insert into inam 
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='INAM';   --INAM significa Ingeniería Ambiental
+
+end;
+
+execute insertar_inam;
+
+select * from inam;
+
+drop table inam;
+
+----------------Se crea la tabla para la carrera de Ingeniería Industrial-------------------------
+create table inin(
+idinin number (5) primary key not null,
+matricula_inin nvarchar2 (12),
+nombre_inin nvarchar2(80),
+grupo_inin nvarchar2(5),
+edicifio_inin nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a inin,pero solo los alumnos de la carrera ININ-----------------
+create or replace procedure insertar_inin
+as
+begin
+    
+    insert into inin 
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='ININ';   --ININ significa Ingeniería Industrial
+
+end;
+
+execute insertar_inin;
+
+select * from inin;
+
+drop table inin;
+
+----------------Se crea la tabla para la carrera de Ingeniería en Administración-------------------------
+create table inad(
+idinad number (5) primary key not null,
+matricula_inad nvarchar2 (12),
+nombre_inad nvarchar2(80),
+grupo_inad nvarchar2(5),
+edicifio_inad nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a inad,pero solo los alumnos de la carrera INAD-----------------
+create or replace procedure insertar_inad
+as
+begin
+    
+    insert into inad 
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='INAD';   --INAD significa Ingeniería en Administración
+
+end;
+
+execute insertar_inad;
+
+select * from inad;
+
+drop table inad;
+
+----------------Se crea la tabla para la carrera de Ingeniería en Energías Renovables-------------------------
+create table ier(
+idier number (5) primary key not null,
+matricula_ier nvarchar2 (12),
+nombre_ier nvarchar2(80),
+grupo_ier nvarchar2(5),
+edicifio_ier nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a ier,pero solo los alumnos de la carrera IER-----------------
+create or replace procedure insertar_ier
+as
+begin
+    
+    insert into ier
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='IER';   --IER significa Ingeniería en Energías Renovables
+
+end;
+
+execute insertar_ier;
+
+select * from ier;
+
+drop table ier;
+
+----------------Se crea la tabla para la carrera de Ingeniería en Sistemas Automotrices -------------------------
+create table isa(
+idisa number (5) primary key not null,
+matricula_isa nvarchar2 (12),
+nombre_isa nvarchar2(80),
+grupo_isa nvarchar2(5),
+edicifio_isa nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a isa,pero solo los alumnos de la carrera ISA-----------------
+create or replace procedure insertar_isa
+as
+begin
+    
+    insert into isa 
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where carrera_alum='ISA';   --ISA significa Ingeniería en Sistemas Automotrices 
+
+end;
+
+execute insertar_isa;
+
+select * from isa;
+
+drop table isa;
+
+-------------------Esta seccion esta hecha para los join, en donde veremos cuales alumnos estan en el mismo semestre con base a las tablas de carrera ------------------
+select * from isc join tic on grupo_isc like '1%' and grupo_tic like '1%' join connn on grupo_isc like '1%' and grupo_con like '1%'
+join leg on grupo_isc like '1%' and grupo_leg like '1%' join inam on grupo_isc like '1%' and grupo_inam like '1%' 
+join inin on grupo_isc like '1%' and grupo_inin like '1%'
+join inad on grupo_isc like '1%' and grupo_inad like '1%' join ier on grupo_isc like '1%' and grupo_ier like '1%' 
+join isa on grupo_isc like '1%' and grupo_isa like '1%';
+
+select * from isc join tic on grupo_isc like '2%' and grupo_tic like '2%' join connn on grupo_isc like '2%' and grupo_con like '2%'
+join leg on grupo_isc like '2%' and grupo_leg like '2%' join inam on grupo_isc like '2%' and grupo_inam like '2%' 
+join inin on grupo_isc like '2%' and grupo_inin like '2%'
+join inad on grupo_isc like '2%' and grupo_inad like '2%' join ier on grupo_isc like '2%' and grupo_ier like '2%' 
+join isa on grupo_isc like '2%' and grupo_isa like '2%';
+
+select * from isc join tic on grupo_isc like '3%' and grupo_tic like '3%' join connn on grupo_isc like '3%' and grupo_con like '3%'
+join leg on grupo_isc like '3%' and grupo_leg like '3%' join inam on grupo_isc like '3%' and grupo_inam like '3%' 
+join inin on grupo_isc like '3%' and grupo_inin like '3%'
+join inad on grupo_isc like '3%' and grupo_inad like '3%' join ier on grupo_isc like '3%' and grupo_ier like '3%' 
+join isa on grupo_isc like '3%' and grupo_isa like '3%';
+
+select * from isc join tic on grupo_isc like '4%' and grupo_tic like '4%' join connn on grupo_isc like '4%' and grupo_con like '4%'
+join leg on grupo_isc like '4%' and grupo_leg like '4%' join inam on grupo_isc like '4%' and grupo_inam like '4%' 
+join inin on grupo_isc like '4%' and grupo_inin like '4%'
+join inad on grupo_isc like '4%' and grupo_inad like '4%' join ier on grupo_isc like '4%' and grupo_ier like '4%' 
+join isa on grupo_isc like '4%' and grupo_isa like '4%';
+
+select * from isc join tic on grupo_isc like '5%' and grupo_tic like '5%' join connn on grupo_isc like '5%' and grupo_con like '5%'
+join leg on grupo_isc like '5%' and grupo_leg like '5%' join inam on grupo_isc like '5%' and grupo_inam like '5%' 
+join inin on grupo_isc like '5%' and grupo_inin like '5%'
+join inad on grupo_isc like '5%' and grupo_inad like '5%' join ier on grupo_isc like '5%' and grupo_ier like '5%' 
+join isa on grupo_isc like '5%' and grupo_isa like '5%';
+
+select * from isc join tic on grupo_isc like '6%' and grupo_tic like '6%' join connn on grupo_isc like '6%' and grupo_con like '6%'
+join leg on grupo_isc like '6%' and grupo_leg like '6%' join inam on grupo_isc like '6%' and grupo_inam like '6%' 
+join inin on grupo_isc like '6%' and grupo_inin like '6%'
+join inad on grupo_isc like '6%' and grupo_inad like '6%' join ier on grupo_isc like '6%' and grupo_ier like '6%' 
+join isa on grupo_isc like '6%' and grupo_isa like '6%';
+
+select * from isc join tic on grupo_isc like '7%' and grupo_tic like '7%' join connn on grupo_isc like '7%' and grupo_con like '7%'
+join leg on grupo_isc like '7%' and grupo_leg like '7%' join inam on grupo_isc like '7%' and grupo_inam like '7%' 
+join inin on grupo_isc like '7%' and grupo_inin like '7%'
+join inad on grupo_isc like '7%' and grupo_inad like '7%' join ier on grupo_isc like '7%' and grupo_ier like '7%' 
+join isa on grupo_isc like '7%' and grupo_isa like '7%';
+
+select * from isc join tic on grupo_isc like '8%' and grupo_tic like '8%' join connn on grupo_isc like '8%' and grupo_con like '8%'
+join leg on grupo_isc like '8%' and grupo_leg like '8%' join inam on grupo_isc like '8%' and grupo_inam like '8%' 
+join inin on grupo_isc like '8%' and grupo_inin like '8%'
+join inad on grupo_isc like '8%' and grupo_inad like '8%' join ier on grupo_isc like '8%' and grupo_ier like '8%' 
+join isa on grupo_isc like '8%' and grupo_isa like '8%';
+
+select * from isc join tic on grupo_isc like '9%' and grupo_tic like '9%' join connn on grupo_isc like '9%' and grupo_con like '9%'
+join leg on grupo_isc like '9%' and grupo_leg like '9%' join inam on grupo_isc like '9%' and grupo_inam like '9%' 
+join inin on grupo_isc like '9%' and grupo_inin like '9%'
+join inad on grupo_isc like '9%' and grupo_inad like '9%' join ier on grupo_isc like '9%' and grupo_ier like '9%' 
+join isa on grupo_isc like '9%' and grupo_isa like '9%';
+
+---------------------Para identificar que alumnos pueden contar con una beca se crea esta seccion que separa a los alumnos por su promedio------------------
+---------------------se crea una tabla para almacenar a los alumnos con la beca de 100%------------------
+create table beca100(
+idbaca100 number (5) primary key not null,
+matricula_beca100 nvarchar2 (12),
+nombre_beca100 nvarchar2(80),
+grupo_beca100 nvarchar2(5),
+edicifio_beca100 nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a beca100,pero solo los alumnos que cumplan con la condicion de la beca-----------------
+create or replace procedure insertar_beca100
+as
+begin
+    
+    insert into beca100
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where promedio_alum>=95 ;   --esta esta la condicion para que el alumnos pueda tener la beca de 100, tener un promedio entre 100% y 95%
+
+end;
+execute insertar_beca100;
+
+select * from beca100;
+
+drop table beca100;
+
+---------------------se crea una tabla para almacenar a los alumnos con la beca de 75%------------------
+create table beca75(
+idbaca75 number (5) primary key not null,
+matricula_beca75 nvarchar2 (12),
+nombre_beca75 nvarchar2(80),
+grupo_beca75 nvarchar2(5),
+edicifio_beca75 nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a beca75,pero solo los alumnos que cumplan con la condicion de la beca-----------------
+create or replace procedure insertar_beca75
+as
+begin
+    
+    insert into beca75
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where promedio_alum>=92 and promedio_alum<=94 ;   --esta esta la condicion para que el alumnos pueda tener la beca de 75, tener un promedio entre 94% y 92%
+
+end;
+
+execute insertar_beca75;
+
+select * from beca75;
+
+drop table beca75;
+
+---------------------se crea una tabla para almacenar a los alumnos con la beca de 50%------------------
+create table beca50(
+idbaca50 number (5) primary key not null,
+matricula_beca50 nvarchar2 (12),
+nombre_beca50 nvarchar2(80),
+grupo_beca50 nvarchar2(5),
+edicifio_beca50 nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a beca50,pero solo los alumnos que cumplan con la condicion de la beca-----------------
+create or replace procedure insertar_beca50
+as
+begin
+    
+    insert into beca50
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where promedio_alum>=90 and promedio_alum<=91 ;   --esta esta la condicion para que el alumnos pueda tener la beca de 50, tener un promedio entre 91% y 90%
+
+end;
+
+execute insertar_beca50;
+
+select * from beca50;
+
+drop table beca50;
+
+---------------------se crea una tabla para almacenar a los alumnos con la beca de 35%------------------
+create table beca35(
+idbaca35 number (5) primary key not null,
+matricula_beca35 nvarchar2 (12),
+nombre_beca35 nvarchar2(80),
+grupo_beca35 nvarchar2(5),
+edicifio_beca35 nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a beca35,pero solo los alumnos que cumplan con la condicion de la beca-----------------
+create or replace procedure insertar_beca35
+as
+begin
+    
+    insert into beca35
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where promedio_alum>=87 and promedio_alum<=89 ;   --esta esta la condicion para que el alumnos pueda tener la beca de 35, tener un promedio entre 89% y 97%
+
+end;
+
+execute insertar_beca35;
+
+select * from beca35;
+
+drop table beca35;
+
+---------------------se crea una tabla para almacenar a los alumnos con la beca de 25%------------------
+create table beca25(
+idbaca25 number (5) primary key not null,
+matricula_beca25 nvarchar2 (12),
+nombre_beca25 nvarchar2(80),
+grupo_beca25 nvarchar2(5),
+edicifio_beca25 nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a beca35,pero solo los alumnos que cumplan con la condicion de la beca-----------------
+create or replace procedure insertar_beca25
+as
+begin
+    
+    insert into beca25
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where promedio_alum>=84 and promedio_alum<=86 ;   --esta esta la condicion para que el alumnos pueda tener la beca de 25, tener un promedio entre 86% y 84%
+
+end;
+
+execute insertar_beca25;
+
+select * from beca25;
+
+drop table beca25;
+
+---------------------se crea una tabla para almacenar a los alumnos con la beca de 10%------------------
+create table beca10(
+idbaca10 number (5) primary key not null,
+matricula_beca10 nvarchar2 (12),
+nombre_beca10 nvarchar2(80),
+grupo_beca10 nvarchar2(5),
+edicifio_beca10 nvarchar2 (5));
+
+----------------Se crea la funcion para pasar los datos de la tabla alumnos_tesoem a beca10,pero solo los alumnos que cumplan con la condicion de la beca-----------------
+create or replace procedure insertar_beca10
+as
+begin
+    
+    insert into beca10
+    select id_alum, matricula_alum, nombre_alum ||' '||apellido_alum_pa ||' '||apellido_alum_ma , grupo_alum, edicifio_alum
+    from alumnos_tesoem
+    where promedio_alum>=80 and promedio_alum<=83 ;   --esta esta la condicion para que el alumnos pueda tener la beca de 80, tener un promedio entre 83% y 80%
+
+end;
+
+execute insertar_beca10;
+
+select * from beca10;
+
+drop table beca10;
+
